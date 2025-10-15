@@ -1,0 +1,52 @@
+# ========================================
+# FITNESS CLASH - GITIGNORE
+# ========================================
+
+# ============ ENVIRONNEMENTS ============
+# Python
+venv/
+env/
+ENV/
+.venv
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Node.js
+node_modules/
+
+# ============ VARIABLES SENSIBLES ============
+.env
+.env.local
+
+# ============ IDE ============
+.vscode/
+.idea/
+*.swp
+
+# ============ BASE DE DONNÉES ============
+*.db
+*.sqlite3
+
+# ============ TESTS ============
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ============ BUILD ============
+build/
+dist/
+*.egg-info/
+
+# ============ LOGS ============
+*.log
+
+# ============ OS ============
+.DS_Store
+Thumbs.db
+
+# ============ UPLOADS ============
+uploads/profile_pictures/*
+!uploads/profile_pictures/.gitkeep
