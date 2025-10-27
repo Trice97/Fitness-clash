@@ -28,7 +28,7 @@ class UserCreate(UserBase):
     """"Creation d'un utilisateur"""
     password: constr(min_length=5) = Field(
         ...,
-        description="Mot de passe (5 caracteres mini)"
+        description="Mot de passe (5 caracteres mini)",
         exemples=["secret123"]
     )
     difficulty_level: int = Field(
