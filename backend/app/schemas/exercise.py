@@ -1,4 +1,4 @@
-python"""Schemas pour les exercices"""
+"""Schemas pour les exercices"""
 from pydantic import BaseModel, Field, constr
 from typing import Optional
 from app.models import BodyPart

@@ -1,12 +1,12 @@
 from pydantic import BaseModel, EmailStr, Field, constr
-from typing import optional 
+from typing import Optional 
 from datetime import datetime
 
 # ==========================================
 # BASE
 # ==========================================
 
-class userBase(basemodel):
+class UserBase(BaseModel):
     """Champs communs"""
 
     username: constr(min_length=3, max_length=50) = Field(

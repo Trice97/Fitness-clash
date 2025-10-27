@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
-from typing import List, Optionnal
+from typing import List, Optional
 from datetime import datetime
-from app.schemas.exercise import Exerciceresponse
+from app.schemas.exercise import ExerciseResponse
 
 
 # ==========================================
@@ -9,7 +9,7 @@ from app.schemas.exercise import Exerciceresponse
 # ==========================================
 
 
-class WorkoutExerciceResponse(BaseModel):
+class WorkoutExerciseResponse(BaseModel):
     """un exercice dans un entrainement"""
     
     order: int
