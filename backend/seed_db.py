@@ -1,40 +1,37 @@
 
-m app.database import SessionLocal
-from app.models import exercicse, BodyPart
-from sqlalchemy.exc import integrityError
+from app.database import SessionLocal
+from app.models import Exercise, BodyPart
+from sqlalchemy.exc import IntegrityError
 
 """
-Script initialisant la base de donnée postgresql avec les 45 exos "Bodyweights" de referrence classé par niveaux de difficulté
-"""
+    Script initialisant la base de donnée postgresql avec les 45 exos "Bodyweights" de referrence classé par niveaux de difficulté
+    """
 
 def seed_exercises():
+    """intégration dans la dbde l'ensemble des exercices séelectionnés;
+    ps il est possible que seed_exercices soit modifié sous réserves de correspondances entre les exercices selectionnés et leurs correspondances Gifs"""
 
+    db = SessionLocal()
 
-"""remplissage de la db postgresql avec l'ensembles des exercices séelectionnés;
-ps il est possible que seed_exercices soit modifié sous réserves de correspondances entre les exercices selectionnés et leurs correspondances Gifs"""
+    try:
+        print("Seeding des exos")
 
-db = Sessionlocal()
-
-try: 
-    print
-
-    exercices_data = [
+        exercises_data = [
 
 # ==========================================
 # UPPER BODY - NIVEAU 1 (Débutant)
 # ==========================================
-{
-    "name": "Wall Push-ups",
-    "Body_part": BodyPart,UPPER,
-    "difficulty":1,
-    "description":"pompes contre un mur, idéal pour débuter",
-    "instructions":"Placez vos mains contre un mur à hauteur d'épaules, écartées de la largeur des épaules. Éloignez vos pieds du mur. Fléchissez les coudes pour rapprocher votre poitrine du mur, puis repoussez. Gardez le corps droit.",
-    "reps": 15,
-    "duration_seconds": None,
-    "points_value": 5,
-    "gif_url": None
-},
-{
+            {
+                    "name": "Wall Push-ups",
+                    "body_part": BodyPart.UPPER,
+                    "difficulty": 1,
+                    "description": "pompes contre un mur, idéal pour débuter",
+                    "instructions": "Placez vos mains contre un mur à hauteur d'épaules, écartées de la largeur des épaules. Éloignez vos pieds du mur. Fléchissez les coudes pour rapprocher votre poitrine du mur, puis repoussez. Gardez le corps droit.",
+                    "reps": 15,
+                    "duration_seconds": None,
+                    "points_value": 5,
+                              },
+            {
                 "name": "Knee Push-ups",
                 "body_part": BodyPart.UPPER,
                 "difficulty": 1,
@@ -43,8 +40,7 @@ try:
                 "reps": 12,
                 "duration_seconds": None,
                 "points_value": 8,
-                "gif_url": None
-            },
+                            },
             {
                 "name": "Incline Push-ups",
                 "body_part": BodyPart.UPPER,
@@ -54,8 +50,7 @@ try:
                 "reps": 12,
                 "duration_seconds": None,
                 "points_value": 8,
-                "gif_url": None
-            },
+                            },
             {
                 "name": "Arm Circles",
                 "body_part": BodyPart.UPPER,
@@ -65,8 +60,7 @@ try:
                 "reps": None,
                 "duration_seconds": 30,
                 "points_value": 5,
-                "gif_url": None
-            },
+                            },
             {
                 "name": "Shoulder Taps",
                 "body_part": BodyPart.UPPER,
@@ -76,8 +70,7 @@ try:
                 "reps": 20,
                 "duration_seconds": None,
                 "points_value": 8,
-                "gif_url": None
-            },
+                           },
             
             # ==========================================
             # UPPER BODY - NIVEAU 2 (Intermédiaire)
@@ -91,8 +84,7 @@ try:
                 "reps": 15,
                 "duration_seconds": None,
                 "points_value": 12,
-                "gif_url": None
-            },
+                          },
             {
                 "name": "Wide Push-ups",
                 "body_part": BodyPart.UPPER,
@@ -102,8 +94,7 @@ try:
                 "reps": 12,
                 "duration_seconds": None,
                 "points_value": 12,
-                "gif_url": None
-            },
+                            },
             {
                 "name": "Diamond Push-ups",
                 "body_part": BodyPart.UPPER,
@@ -113,8 +104,7 @@ try:
                 "reps": 10,
                 "duration_seconds": None,
                 "points_value": 15,
-                "gif_url": None
-            },
+                            },
             {
                 "name": "Pike Push-ups",
                 "body_part": BodyPart.UPPER,
@@ -124,8 +114,7 @@ try:
                 "reps": 12,
                 "duration_seconds": None,
                 "points_value": 15,
-                "gif_url": None
-            },
+                            },
             {
                 "name": "Tricep Dips",
                 "body_part": BodyPart.UPPER,
@@ -135,8 +124,7 @@ try:
                 "reps": 15,
                 "duration_seconds": None,
                 "points_value": 12,
-                "gif_url": None
-            },
+                            },
             
             # ==========================================
             # UPPER BODY - NIVEAU 3 (Avancé)
@@ -150,8 +138,7 @@ try:
                 "reps": 12,
                 "duration_seconds": None,
                 "points_value": 18,
-                "gif_url": None
-            },
+                           },
             {
                 "name": "Archer Push-ups",
                 "body_part": BodyPart.UPPER,
@@ -161,8 +148,7 @@ try:
                 "reps": 10,
                 "duration_seconds": None,
                 "points_value": 20,
-                "gif_url": None
-            },
+                           },
             {
                 "name": "Pseudo Planche Push-ups",
                 "body_part": BodyPart.UPPER,
@@ -172,8 +158,7 @@ try:
                 "reps": 8,
                 "duration_seconds": None,
                 "points_value": 22,
-                "gif_url": None
-            },
+                          },
             {
                 "name": "Clapping Push-ups",
                 "body_part": BodyPart.UPPER,
@@ -183,8 +168,7 @@ try:
                 "reps": 8,
                 "duration_seconds": None,
                 "points_value": 22,
-                "gif_url": None
-            },
+                           },
             {
                 "name": "One-arm Push-ups",
                 "body_part": BodyPart.UPPER,
@@ -194,8 +178,7 @@ try:
                 "reps": 5,
                 "duration_seconds": None,
                 "points_value": 30,
-                "gif_url": None
-            },
+                           },
             
             # ==========================================
             # CORE - NIVEAU 1 (Débutant)
@@ -209,8 +192,7 @@ try:
                 "reps": None,
                 "duration_seconds": 30,
                 "points_value": 8,
-                "gif_url": None
-            },
+                            },
             {
                 "name": "Dead Bug",
                 "body_part": BodyPart.CORE,
@@ -220,8 +202,7 @@ try:
                 "reps": 12,
                 "duration_seconds": None,
                 "points_value": 8,
-                "gif_url": None
-            },
+                          },
             {
                 "name": "Bird Dog",
                 "body_part": BodyPart.CORE,
@@ -231,8 +212,7 @@ try:
                 "reps": 10,
                 "duration_seconds": None,
                 "points_value": 8,
-                "gif_url": None
-            },
+                           },
             {
                 "name": "Lying Leg Raises",
                 "body_part": BodyPart.CORE,
@@ -242,8 +222,7 @@ try:
                 "reps": 12,
                 "duration_seconds": None,
                 "points_value": 8,
-                "gif_url": None
-            },
+                           },
             {
                 "name": "Knee Raises",
                 "body_part": BodyPart.CORE,
@@ -253,8 +232,7 @@ try:
                 "reps": 15,
                 "duration_seconds": None,
                 "points_value": 8,
-                "gif_url": None
-            },
+                         },
             
             # ==========================================
             # CORE - NIVEAU 2 (Intermédiaire)
@@ -268,8 +246,7 @@ try:
                 "reps": 20,
                 "duration_seconds": None,
                 "points_value": 10,
-                "gif_url": None
-            },
+                          },
             {
                 "name": "Bicycle Crunches",
                 "body_part": BodyPart.CORE,
@@ -279,8 +256,7 @@ try:
                 "reps": 20,
                 "duration_seconds": None,
                 "points_value": 12,
-                "gif_url": None
-            },
+                          },
             {
                 "name": "Russian Twists",
                 "body_part": BodyPart.CORE,
@@ -290,8 +266,7 @@ try:
                 "reps": 30,
                 "duration_seconds": None,
                 "points_value": 12,
-                "gif_url": None
-            },
+                          },
             {
                 "name": "Plank 60s",
                 "body_part": BodyPart.CORE,
@@ -301,8 +276,7 @@ try:
                 "reps": None,
                 "duration_seconds": 60,
                 "points_value": 15,
-                "gif_url": None
-            },
+                           },
             {
                 "name": "Mountain Climbers",
                 "body_part": BodyPart.CORE,
@@ -312,8 +286,7 @@ try:
                 "reps": 30,
                 "duration_seconds": None,
                 "points_value": 15,
-                "gif_url": None
-            },
+                          },
             
             # ==========================================
             # CORE - NIVEAU 3 (Avancé)
@@ -327,7 +300,7 @@ try:
                 "reps": 15,
                 "duration_seconds": None,
                 "points_value": 18,
-                "gif_url": None
+               
             },
             {
                 "name": "Dragon Flags",
@@ -338,8 +311,7 @@ try:
                 "reps": 8,
                 "duration_seconds": None,
                 "points_value": 25,
-                "gif_url": None
-            },
+                         },
             {
                 "name": "Hanging Leg Raises",
                 "body_part": BodyPart.CORE,
@@ -349,8 +321,7 @@ try:
                 "reps": 12,
                 "duration_seconds": None,
                 "points_value": 20,
-                "gif_url": None
-            },
+                          },
             {
                 "name": "L-sit",
                 "body_part": BodyPart.CORE,
@@ -360,8 +331,7 @@ try:
                 "reps": None,
                 "duration_seconds": 20,
                 "points_value": 22,
-                "gif_url": None
-            },
+                         },
             {
                 "name": "Plank to Push-up",
                 "body_part": BodyPart.CORE,
@@ -371,8 +341,7 @@ try:
                 "reps": 15,
                 "duration_seconds": None,
                 "points_value": 18,
-                "gif_url": None
-            },
+                          },
             
             # ==========================================
             # LOWER BODY - NIVEAU 1 (Débutant)
@@ -386,8 +355,7 @@ try:
                 "reps": 20,
                 "duration_seconds": None,
                 "points_value": 8,
-                "gif_url": None
-            },
+                          },
             {
                 "name": "Wall Sit 30s",
                 "body_part": BodyPart.LOWER,
@@ -397,8 +365,7 @@ try:
                 "reps": None,
                 "duration_seconds": 30,
                 "points_value": 8,
-                "gif_url": None
-            },
+                        },
             {
                 "name": "Calf Raises",
                 "body_part": BodyPart.LOWER,
@@ -408,8 +375,7 @@ try:
                 "reps": 20,
                 "duration_seconds": None,
                 "points_value": 5,
-                "gif_url": None
-            },
+                         },
             {
                 "name": "Glute Bridges",
                 "body_part": BodyPart.LOWER,
@@ -419,8 +385,7 @@ try:
                 "reps": 15,
                 "duration_seconds": None,
                 "points_value": 8,
-                "gif_url": None
-            },
+                          },
             {
                 "name": "Step-ups",
                 "body_part": BodyPart.LOWER,
@@ -430,8 +395,7 @@ try:
                 "reps": 12,
                 "duration_seconds": None,
                 "points_value": 8,
-                "gif_url": None
-            },
+                          },
             
             # ==========================================
             # LOWER BODY - NIVEAU 2 (Intermédiaire)
@@ -445,8 +409,7 @@ try:
                 "reps": 15,
                 "duration_seconds": None,
                 "points_value": 15,
-                "gif_url": None
-            },
+                         },
             {
                 "name": "Lunges",
                 "body_part": BodyPart.LOWER,
@@ -456,8 +419,7 @@ try:
                 "reps": 15,
                 "duration_seconds": None,
                 "points_value": 12,
-                "gif_url": None
-            },
+                            },
             {
                 "name": "Bulgarian Split Squats",
                 "body_part": BodyPart.LOWER,
@@ -467,8 +429,7 @@ try:
                 "reps": 12,
                 "duration_seconds": None,
                 "points_value": 15,
-                "gif_url": None
-            },
+                       },
             {
                 "name": "Sumo Squats",
                 "body_part": BodyPart.LOWER,
@@ -478,8 +439,7 @@ try:
                 "reps": 20,
                 "duration_seconds": None,
                 "points_value": 12,
-                "gif_url": None
-            },
+                         },
             {
                 "name": "Wall Sit 60s",
                 "body_part": BodyPart.LOWER,
@@ -489,8 +449,7 @@ try:
                 "reps": None,
                 "duration_seconds": 60,
                 "points_value": 15,
-                "gif_url": None
-            },
+                      },
             
             # ==========================================
             # LOWER BODY - NIVEAU 3 (Avancé)
@@ -504,8 +463,7 @@ try:
                 "reps": 8,
                 "duration_seconds": None,
                 "points_value": 25,
-                "gif_url": None
-            },
+                            },
             {
                 "name": "Jump Lunges",
                 "body_part": BodyPart.LOWER,
@@ -515,8 +473,7 @@ try:
                 "reps": 20,
                 "duration_seconds": None,
                 "points_value": 20,
-                "gif_url": None
-            },
+                          },
             {
                 "name": "Single-leg Deadlifts",
                 "body_part": BodyPart.LOWER,
@@ -526,8 +483,7 @@ try:
                 "reps": 12,
                 "duration_seconds": None,
                 "points_value": 18,
-                "gif_url": None
-            },
+                          },
             {
                 "name": "Shrimp Squats",
                 "body_part": BodyPart.LOWER,
@@ -537,8 +493,7 @@ try:
                 "reps": 8,
                 "duration_seconds": None,
                 "points_value": 22,
-                "gif_url": None
-            },
+                          },
             {
                 "name": "Box Jumps",
                 "body_part": BodyPart.LOWER,
@@ -548,8 +503,7 @@ try:
                 "reps": 15,
                 "duration_seconds": None,
                 "points_value": 20,
-                "gif_url": None
-            },
+                          },
         ]
         
         # Insérer les exercices
@@ -597,7 +551,6 @@ try:
         db.rollback()
     finally:
         db.close()
-
 
 if __name__ == "__main__":
     seed_exercises()

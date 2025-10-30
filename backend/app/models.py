@@ -103,25 +103,25 @@ class User(Base):
     )
     contacts_initiated = relationship(
         "Contact",
-        foreign_keys=["Contact.user_id"],
+        foreign_keys="[Contact.user_id]",
         back_populates="user",
         cascade="all, delete-orphan",
     )
     contacts_received = relationship(
         "Contact",
-        foreign_keys=["Contact.contact_id"],
+        foreign_keys="[Contact.contact_id]",
         back_populates="contact",
         cascade="all, delete-orphan",
     )
     clashes_as_challenger = relationship(
         "Clash",
-        foreign_keys=["Clash.challenger_id"],
+        foreign_keys="[Clash.challenger_id]",
         back_populates="challenger",
         cascade="all, delete-orphan",
     )
     clashes_as_challenged = relationship(
         "Clash",
-        foreign_keys=["Clash.challenged_id"],
+        foreign_keys="[Clash.challenged_id]",
         back_populates="challenged",
         cascade="all, delete-orphan",
     )
@@ -214,13 +214,13 @@ class Workout(Base):
     )
     clashes = relationship(
         "Clash",
-        foreign_keys=["Clash.workout_id"],
+        foreign_keys="[Clash.workout_id]",
         back_populates="workout",
         cascade="all, delete-orphan",
     )
     challenged_workouts = relationship(
         "Clash",
-        foreign_keys=["Clash.challenged_workout_id"],
+        foreign_keys="[Clash.challenged_workout_id]",
         back_populates="challenged_workout",
     )
 
@@ -297,10 +297,10 @@ class Contact(Base):
 
     # relations
     user = relationship(
-        "User", foreign_keys=[user_id], back_populates="contacts_initiated"
+        "User", foreign_keys="[Contact.user_id]", back_populates="contacts_initiated"
     )
     contact = relationship(
-        "User", foreign_keys=[contact_id], back_populates="contacts_received"
+        "User", foreign_keys="[Contact.contact_id]", back_populates="contacts_received"
     )
 
     def __repr__(self):
@@ -356,22 +356,22 @@ class Clash(Base):
 
     # Relations
     challenger = relationship(
-        "User", foreign_keys=[challenger_id], back_populates="clashes_as_challenger"
+        "User", foreign_keys="[Clash.challenger_id]", back_populates="clashes_as_challenger"
     )
     challenged = relationship(
         "User",
-        foreign_keys=[challenged_id],
+        foreign_keys="[Clash.challenged_id]",
         back_populates="clashes_as_challenged",
     )
     workout = relationship(
-        "Workout", foreign_keys=[workout_id], back_populates="clashes"
+        "Workout", foreign_keys="[Clash.workout_id]", back_populates="clashes"
     )
     challenged_workout = relationship(
         "Workout",
-        foreign_keys=[challenged_workout_id],
+        foreign_keys="[Clash.challenged_workout_id]",
         back_populates="challenged_workouts",
     )
-    winner = relationship("User", foreign_keys=[winner_id])
+    winner = relationship("User", foreign_keys="[Clash.winner_id]")
 
     def __repr__(self):
         return f"<Clash(id={self.id}, challenger_id={self.challenger_id}, challenged_id={self.challenged_id}, status='{self.status}')>"
