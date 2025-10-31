@@ -369,7 +369,7 @@ class Clash(Base):
     challenged_workout = relationship(
         "Workout",
         foreign_keys="[Clash.challenged_workout_id]",
-        back_populates="challenged_workouts",
+        back_populates="challenged_workouts", 
     )
     winner = relationship("User", foreign_keys="[Clash.winner_id]")
 
