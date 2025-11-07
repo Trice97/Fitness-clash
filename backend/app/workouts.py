@@ -5,7 +5,7 @@ from app.database import Base
 
 
 class Workout(Base):
-    """table des entraînements générés automatiquement"""
+    """Table des entraînements générés automatiquement"""
     __tablename__ = "workouts"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -26,14 +26,13 @@ class Workout(Base):
     user = relationship("User", back_populates="workouts")
     workout_exercises = relationship(
         "WorkoutExercise",
-        back_populates="workout"
-        "cascade="all, delete-orphan"
-        "order_by="WorkoutExercise.order"
+        back_populates="workout",
+        cascade="all, delete-orphan",
+        order_by="WorkoutExercise.order"
 )
-
-
-def __repr__(self):
-    return f"<workout(id={self.id}, user_id={self.user_id}, completed={self.is_completed}, points={self.totalpoints})>"
+    
+    def __repr__(self):
+        return f"<workout(id={self.id}, user_id={self.user_id}, completed={self.is_completed}, points={self.total_points})>"
 
 class WorkoutExercise(Base):
     """Table d'association entre Workout et Exercise"""
@@ -41,9 +40,19 @@ class WorkoutExercise(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    # clés étrangères
+    
+    # 🔗 Clés étrangères
     workout_id = Column(Integer, ForeignKey("workouts.id", ondelete="CASCADE"), nullable=False)
     exercise_id = Column(Integer, ForeignKey("exercises.id", ondelete="CASCADE"), nullable=False)
+
+    # Ordre et objectifs
+    order = Column(Integer, nullable=False)
+    target_reps = Column(Integer, nullable=True)
+    target_duration = Column(Integer, nullable=True)
+
+    # 🔁 Relations ORM
+    workout = relationship("Workout", back_populates="workout_exercises")
+    exercise = relationship("Exercise", back_populates="workout_exercises")
                                              
     def __repr__(self):
         return f"<WorkoutExercise(workout_id={self.workout_id}, exercise_id={self.exercise_id}, order={self.order})>"
