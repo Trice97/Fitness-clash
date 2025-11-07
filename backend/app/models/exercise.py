@@ -7,18 +7,21 @@ from sqlalchemy.orm import relationship
 
 class BodyPart(str, enum.Enum):
     """Parties du corps ciblées par l'exercice"""
+
     upper = "upper"
     core = "core"
     lower = "lower"
 
+
 class Exercise(Base):
     """Table des exercices bodyweight"""
+
     __tablename__ = "exercises"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(100), unique=True, nullable=False, index=True)
     body_part = Column(Enum(BodyPart), nullable=False, index=True)
-    difficulty = Column(Integer, nullable= False, index=True)
+    difficulty = Column(Integer, nullable=False, index=True)
 
     description = Column(Text, nullable=True)
     instructions = Column(Text, nullable=True)
@@ -28,7 +31,7 @@ class Exercise(Base):
     points_value = Column(Integer, nullable=False, default=10)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-                    
+
     # relation avec la table intermédiair Workoutexercise
     workout_exercises = relationship("WorkoutExercise", back_populates="exercise")
 

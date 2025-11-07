@@ -6,12 +6,15 @@ from app.database import Base
 
 class Workout(Base):
     """Table des entraînements générés automatiquement"""
+
     __tablename__ = "workouts"
 
     id = Column(Integer, primary_key=True, index=True)
 
     # 🔗 Lien vers l'utilisateur propriétaire du workout
-    user_id = Column(Integer, ForeignKey("users.id",ondelete="CASCADE"),nullable=False)
+    user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
 
     # Niveau de difficulté du workout (lié au profil de l’utilisateur)
     difficulty_level = Column(Integer, nullable=False)
@@ -28,22 +31,27 @@ class Workout(Base):
         "WorkoutExercise",
         back_populates="workout",
         cascade="all, delete-orphan",
-        order_by="WorkoutExercise.order"
-)
-    
+        order_by="WorkoutExercise.order",
+    )
+
     def __repr__(self):
         return f"<workout(id={self.id}, user_id={self.user_id}, completed={self.is_completed}, points={self.total_points})>"
 
+
 class WorkoutExercise(Base):
     """Table d'association entre Workout et Exercise"""
+
     __tablename__ = "workout_exercises"
 
     id = Column(Integer, primary_key=True, index=True)
 
-    
     # 🔗 Clés étrangères
-    workout_id = Column(Integer, ForeignKey("workouts.id", ondelete="CASCADE"), nullable=False)
-    exercise_id = Column(Integer, ForeignKey("exercises.id", ondelete="CASCADE"), nullable=False)
+    workout_id = Column(
+        Integer, ForeignKey("workouts.id", ondelete="CASCADE"), nullable=False
+    )
+    exercise_id = Column(
+        Integer, ForeignKey("exercises.id", ondelete="CASCADE"), nullable=False
+    )
 
     # Ordre et objectifs
     order = Column(Integer, nullable=False)
@@ -53,6 +61,6 @@ class WorkoutExercise(Base):
     # 🔁 Relations ORM
     workout = relationship("Workout", back_populates="workout_exercises")
     exercise = relationship("Exercise", back_populates="workout_exercises")
-                                             
+
     def __repr__(self):
         return f"<WorkoutExercise(workout_id={self.workout_id}, exercise_id={self.exercise_id}, order={self.order})>"
