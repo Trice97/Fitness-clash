@@ -13,7 +13,7 @@ Définit les structures de données pour validation et réponse API.
 # ==========================================
 
 
-class WorkoutExerciseresponse(BaseModel):
+class WorkoutExerciseResponse(BaseModel):
     """Un exercise dans un entraînement"""
 
     order: int = Field(..., description="ordre de l'exercise dans le workout")
@@ -39,13 +39,17 @@ class WorkoutCreate(BaseModel):
     # le backend génère selon le niveau de l'utilisateur
     pass
 
+#class WorkoutCreate(BaseModel):
+#    body_part_focus: Optional[BodyPart] = None  # Si le user veut cibler une zone
+#    duration_preference: Optional[int] = None   # Durée souhaitée en minutes
+
 
 # ==========================================
 # COMPLETE
 # ==========================================
 
 
-class WorkoutComplet(BaseModel):
+class WorkoutComplete(BaseModel):
     """Validation d'un workout comme étant terminé"""
 
     is_completed: bool = Field(
@@ -58,16 +62,16 @@ class WorkoutComplet(BaseModel):
 # ==========================================
 
 
-class Workoutresponse(BaseModel):
+class WorkoutResponse(BaseModel):
     """réponse API avec un workout complet"""
 
     id: int
-    user_is: int
+    user_id: int
     difficulty_level: int
     total_points: int
     is_completed: bool
     created_at: datetime
-    exercises: List[WorkoutExerciseresponse] = []
+    exercises: List[WorkoutExerciseResponse] = []
 
     class Config:
         from_attributes = True
