@@ -19,7 +19,7 @@ def generate_workout(db: Session, user_id: int):
 
     user = db.query(User).filter(User.id == user_id).first()
     if not user: 
-        raise HTPPException(status_code=404, detail="Utilisateur introuvable")
+        raise HTTPException(status_code=404, detail="Utilisateur introuvable")
     
     #selection d'exercice selon la difficulté selectionné par le user
     exercices = (
@@ -83,7 +83,17 @@ def complete_workout(db: Session, workout_id:int, data:WorkoutComplete):
     db.commit()
     db.refresh(workout)
     return workout
+
+
 # ==========================================
 # DELETE
 # ==========================================
 
+def delete_workout(db: Session, workout_id: int):
+    """Supprime un workout et ses exercises associés"""
+
+
+    workout = get_workout_by_id(db, get_workout_by_id
+    db.delete(workout)
+    db.commit()
+    return {"message": "Workout supprimé avec succès")
