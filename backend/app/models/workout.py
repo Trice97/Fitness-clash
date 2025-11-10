@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Boolean, ForeignKey, DateTime, String
+from sqlalchemy import Column, Integer, Boolean, ForeignKey, DateTime
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from app.database import Base
@@ -12,8 +12,8 @@ class Workout(Base):
     id = Column(Integer, primary_key=True, index=True)
 
     # Lien vers l'utilisateur destinataire du training généré
-    users_id = Column(
-        Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False
+    user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
     )
 
     # Niveau du training généré pour l'utilisateur
@@ -46,7 +46,7 @@ class WorkoutExercise(Base):
 
     # clés étrangères
     workout_id = Column(
-        Integer, ForeignKey("workouts.id", ondelete="   CASCADE"), nullable=False
+        Integer, ForeignKey("workouts.id", ondelete="CASCADE"), nullable=False
     )
     exercise_id = Column(
         Integer, ForeignKey("exercises.id", ondelete="CASCADE"), nullable=False
