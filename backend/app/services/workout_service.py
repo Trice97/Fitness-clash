@@ -13,9 +13,10 @@ from app.schemas.workout import WorkoutCreate, WorkoutComplete
 # ==========================================
 # CREATE
 # ==========================================
-
 def generate_workout(db: Session, user_id: int):
     """Generation automatique d'un training selon le niveau de difficulté selectionné par l'utilisateur"""
+
+
     user = db.query(User).filter(User.id == user_id).first()
     if not user: 
         raise HTPPException(status_code=404, detail="Utilisateur introuvable")
@@ -47,6 +48,42 @@ def generate_workout(db: Session, user_id: int):
             order=index,
             target_reps=10
            target_duration=None,
-        )
+    )
+    db.add(link)
 
+    db.commit()
+    db.refresh()
+    return new_workout
+
+
+# ==========================================
+# READ
+# ==========================================
+def get_workout_by_id(db:session, workout_id: int):
+    """recupere un workout par son ID"""
+    
+    
+    workout = db.query(Workout).filter(Workout.id == workout_id).first()
+    if not workout:
+        raise HTTPExeption(status_code=404, detail="Workout introuvable")
+    return workout
+
+
+# ==========================================
+# COMPLETE
+# ==========================================
+
+def complete_workout(db: Session, workout_id:int, data:WorkoutComplete):
+    """Marque un workout comme terminé"""
+
+
+    workout = get_workout_by_id(db, workout_id)
+    workout.is_completed = data.is._completed
+    workout.total_points += 100
+    db.commit()
+    db.refresh(workout)
+    return workout
+# ==========================================
+# DELETE
+# ==========================================
 
