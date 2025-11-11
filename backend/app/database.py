@@ -16,7 +16,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 engine = create_engine(DATABASE_URL, echo=True, future=True)
 
 # --- Création de la session locale(pour interagir avec la DB) ---
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bing=engine)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # --- Base de classes pour les modeles SQLACLCHEMY ---
 Base = declarative_base()
