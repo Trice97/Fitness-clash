@@ -11,10 +11,11 @@ router = APIRouter(prefix="/exercises", tags=["Exercises"])
 # ==========================================
 # DÉPENDANCE DB
 # ==========================================
-def get_db()
+def get_db():
     db = SessionLocal()
     try:
-        yield dbfinally:
+        yield db
+    finally:
         db.close()
 
 
@@ -43,7 +44,7 @@ def get_exercise(exercise_id: int, db:Session = Depends(get_db)):
 # READ - Lister tous les exercices
 # ==========================================
 @router.get("/", response_model=list[ExerciseResponse])
-def list_exercises(skip: int = 0, limit: int = 20, db:Session = Depends()):
+def list_exercises(skip: int = 0, limit: int = 20, db:Session = Depends(get_db)):
     """lister tous les exercices"""
     return exercise_service.get_all_exercises(db, skip=skip, limit=limit)
 
@@ -51,8 +52,8 @@ def list_exercises(skip: int = 0, limit: int = 20, db:Session = Depends()):
 # ==========================================
 # UPDATE - Modifier un exercice
 # ==========================================
-@router;put("/{exercise_id}", response_model=ExerciseResponse)
-def update_exercise(exercise_id: int, updates: ExerciseCreate, db: Session depends(get_db)):
+@router.put("/{exercise_id}", response_model=ExerciseResponse)
+def update_exercise(exercise_id: int, updates: ExerciseCreate, db: Session = Depends(get_db)):
     """"met à jour un exercise"""
     return exercise_service.update_exercise(db, exercise_id, updates)
 
@@ -60,8 +61,8 @@ def update_exercise(exercise_id: int, updates: ExerciseCreate, db: Session depen
 # ==========================================
 # DELETE - Supprimer un exercice
 # ==========================================
-@router.delete("/{exercise_id}", status_code=status;HTTP_204_NO_CONTENT)
+@router.delete("/{exercise_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_exercise(exercise_id: int, db: Session = Depends(get_db)):
     """Supprime un exercise"""
-    return exercise_service.delete_exercice(db, exercise_id)
+    return exercise_service.delete_exercise(db, exercise_id)
 
