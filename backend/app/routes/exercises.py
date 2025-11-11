@@ -32,7 +32,7 @@ def create_exercise_route(exercise_data: ExerciseCreate, db: Session = Depends(g
 # READ - Récupérer un exercice par ID
 # ==========================================
 @router.get("/{exercise_id}", response_model=ExerciseResponse)
-def get_exercise(exercise_id: int, db:Session = Depends(get_db)):
+def get_exercise(exercise_id: int, db: Session = Depends(get_db)):
     """récuperer un exercise specifique"""
     exercise = exercise_service.get_exercise_by_id(db, exercise_id)
     if not exercise:
@@ -44,7 +44,7 @@ def get_exercise(exercise_id: int, db:Session = Depends(get_db)):
 # READ - Lister tous les exercices
 # ==========================================
 @router.get("/", response_model=list[ExerciseResponse])
-def list_exercises(skip: int = 0, limit: int = 20, db:Session = Depends(get_db)):
+def list_exercises(skip: int = 0, limit: int = 20, db: Session = Depends(get_db)):
     """lister tous les exercices"""
     return exercise_service.get_all_exercises(db, skip=skip, limit=limit)
 
@@ -53,8 +53,10 @@ def list_exercises(skip: int = 0, limit: int = 20, db:Session = Depends(get_db))
 # UPDATE - Modifier un exercice
 # ==========================================
 @router.put("/{exercise_id}", response_model=ExerciseResponse)
-def update_exercise(exercise_id: int, updates: ExerciseCreate, db: Session = Depends(get_db)):
-    """"met à jour un exercise"""
+def update_exercise(
+    exercise_id: int, updates: ExerciseCreate, db: Session = Depends(get_db)
+):
+    """ "met à jour un exercise"""
     return exercise_service.update_exercise(db, exercise_id, updates)
 
 
@@ -65,4 +67,3 @@ def update_exercise(exercise_id: int, updates: ExerciseCreate, db: Session = Dep
 def delete_exercise(exercise_id: int, db: Session = Depends(get_db)):
     """Supprime un exercise"""
     return exercise_service.delete_exercise(db, exercise_id)
-

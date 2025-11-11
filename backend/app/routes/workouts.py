@@ -8,21 +8,20 @@ from app.services import workout_service
 router = APIRouter(prefix="/workouts", tags=["Workouts"])
 
 
-def get_db(): 
+def get_db():
     db = SessionLocal()
     try:
-            yield db
+        yield db
     finally:
-          db.close()
+        db.close()
 
 
 # ==========================================
 # CREATE - Génération automatique d’un workout
 # ==========================================
 @router.post("/generate/{user_id}", response_model=WorkoutResponse)
-def generate_workout(user_id: int, db: Session= Depends(get_db)):
+def generate_workout(user_id: int, db: Session = Depends(get_db)):
     """genere un nouvelk entrainemenr pour l'utilisateur"""
-
 
     return workout_service.generate_workout(db, user_id)
 
@@ -42,12 +41,15 @@ def get_workout(workout_id: int, db: Session = Depends(get_db)):
 # UPDATE - Marquer un workout comme complété
 # ==========================================
 @router.put("/{workout_id}/complete", response_model=WorkoutResponse)
-def complete_workout(workout_id: int, data: WorkoutComplete, db: Session= Depends(get_db)):
-     return workout_service.complete_workout(db, workout_id, data)
+def complete_workout(
+    workout_id: int, data: WorkoutComplete, db: Session = Depends(get_db)
+):
+    return workout_service.complete_workout(db, workout_id, data)
+
 
 # ==========================================
 # DELETE
 # ==========================================
-@router.delete("/{workout_id}")
+@router.delete("/{workout_id}", status_code=204)
 def delete_workout(workout_id: int, db: Session = Depends(get_db)):
-   return workout_service.delete_workout(db, workout_id)
+    return workout_service.delete_workout(db, workout_id)

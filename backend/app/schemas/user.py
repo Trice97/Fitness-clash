@@ -78,12 +78,13 @@ class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
-#class Token(baseModel):
+
+# class Token(baseModel):
 #   """Réponse après le login"""
 #    access_token: str
 #    token_type: str = "bearer"
 
-#class tokendata(Basemodel):
+# class tokendata(Basemodel):
 #    """Données contenues dans le token"""
-#    user_id: Optional[int] = None 
+#    user_id: Optional[int] = None
 #    email:Optional[str] = None

@@ -39,7 +39,8 @@ class WorkoutCreate(BaseModel):
     # le backend génère selon le niveau de l'utilisateur
     pass
 
-#class WorkoutCreate(BaseModel):
+
+# class WorkoutCreate(BaseModel):
 #    body_part_focus: Optional[BodyPart] = None  # Si le user veut cibler une zone
 #    duration_preference: Optional[int] = None   # Durée souhaitée en minutes
 
