@@ -3,8 +3,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 class Settings:
-    SECRET_KEY = os.getenv("SECRET_ENV", "supersecretkey123")
+    SECRET_KEY = os.getenv("SECRET_KEY", "supersecretkey123")
+
 
 settings = Settings()
-
