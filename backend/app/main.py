@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
+from app.routes import users, workouts, exercises
 
 # ---Création des tables---
 Base.metadata.create_all(bind=engine)
@@ -47,3 +48,8 @@ def root():
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
+
+
+app.include_router(users.router)
+app.include_router(workouts.router)
+app.include_router(exercises.router)
