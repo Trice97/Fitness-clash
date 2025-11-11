@@ -26,13 +26,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# --- Inclusion des routes (ajout plus tard) ---
-# from app.routes import auth, users, exercises, workouts
-# app.include_router(auth.router, prefix="/api")
-# app.include_router(users.router, prefix="/api")
+# from app.routes import exercises
 # app.include_router(exercises.router, prefix="/api")
-# app.include_router(workouts.router, prefix="/api")
+
+# Inclusion des routes
+app.include_router(users.router, prefix="/api")
+app.include_router(workouts.router, prefix="/api")
+app.include_router(exercises.router, prefix="/api")
 
 
 # --- Routes de base ---
@@ -48,8 +48,3 @@ def root():
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
-
-
-app.include_router(users.router)
-app.include_router(workouts.router)
-app.include_router(exercises.router)
