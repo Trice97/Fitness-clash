@@ -22,12 +22,12 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60
 # Hashing functions
 # =========================================
 def hash_password(password: str) -> str:
-    """ "hash le password avec la fonctionalité bcrypt"""
+    """Hash le password avec la fonctionalité bcrypt"""
     return pwd_context.hash(password)
 
 
-def verify_password(plain_password: str, hashed_password: str) -> str:
-    """vérifie la correspondance du hash entr ele mot de pass en clair et celui hashe"""
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Vérifie la correspondance du hash entre le mot de pass en clair et celui hashe"""
     return pwd_context.verify(plain_password, hashed_password)
 
 
@@ -35,7 +35,7 @@ def verify_password(plain_password: str, hashed_password: str) -> str:
 # Fonctions JWT
 # ======================================================
 def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
-    """cree un token JWT qui expire au bout de 60 minutes"""
+    """Cree un token JWT qui expire au bout de 60 minutes"""
     to_encode = data.copy()
     expire = datetime.utcnow() + (
         expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -44,14 +44,14 @@ def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
-def decode_access_token(token: str) -> str:
-    """decode un token JWT et renvoie les données sure si il est valide"""
+def decode_access_token(token: str) -> dict:
+    """Decode un token JWT et renvoie les données sure si il est valide"""
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithm=ALGORITHM)
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload
     except JWTError:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTORIZED,
-            detail="Token invalide ou expiré,",
-            headers={"www-Authenticate": "Bearer"},
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token invalide ou expiré",
+            headers={"WWW-Authenticate": "Bearer"},
         )
