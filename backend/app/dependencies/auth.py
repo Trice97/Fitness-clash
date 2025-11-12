@@ -39,20 +39,26 @@ def get_current_user(
     token = credentials.credentials
     try:
         payload = decode_access_token(token)
-        user_id: int = payload.get("user_id")
-        if user_id is None:
+        user_id_str: str = payload.get("sub")
+        if user_id_str is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="token invalide (pas d'identifiant utilisateur)",
                 headers={"WWW-Authenticate": "Bearer"},
             )
+        user_id = int(user_id_str)
     except JWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token invalide ou expiré",
             headers={"WWW-Authenticate": "Bearer"},
         )
-
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Format de token invalide",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     user = db.query(User).filter(User.id == user_id).first()
     if user is None:
         raise HTTPException(
