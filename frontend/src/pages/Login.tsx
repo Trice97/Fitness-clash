@@ -1,134 +1,208 @@
+// src/pages/Login.tsx (VERSION STYLISÉE)
+
 import React, { useState } from 'react';
-// 1. Import de useNavigate pour la redirection après connexion
-import { Link, useNavigate } from 'react-router-dom'; 
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext'; // Assurez-vous que le chemin est correct
+
+const API_BASE_URL = "http://localhost:8000";
 
 const Login = () => {
-    // Initialisation du hook de navigation
-    const navigate = useNavigate();
-    
-    // 2. Déclaration des états
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(''); 
-    const [isLoading, setIsLoading] = useState(false); // AJOUT: État de chargement
+    const [isLoading, setIsLoading] = useState(false);
+    
+    // États pour les messages de statut
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState<string | null>(null);
+    
+    const navigate = useNavigate();
+    const { login } = useAuth();
 
-    // 3. Fonction asynchrone appelée lors de la soumission
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault(); 
-        setError(''); // Réinitialise l'erreur
-        setIsLoading(true); // Début du chargement
+        e.preventDefault();
+        setError(null); 
+        setSuccess(null); 
+        setIsLoading(true);
 
-        // 4. Configuration de l'appel API
-        // *** VÉRIFIEZ LE PORT (ex: 8000) ET L'URL DE BASE DU BACK-END ***
-        const API_URL = "http://localhost:8000/auth/login"; 
-        
-        // 5. Création des données au format 'form-urlencoded' (requis par FastAPI)
-        const data = new URLSearchParams();
-        data.append('username', email); // L'email est envoyé comme 'username'
-        data.append('password', password);
+        const API_URL = `${API_BASE_URL}/auth/login`;
 
         try {
             const response = await fetch(API_URL, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded', // IMPORTANT
-                },
-                body: data,
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `username=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`,
             });
 
             const responseData = await response.json();
 
             if (response.ok) {
-                // Succès: Récupérer et stocker le token
                 const accessToken = responseData.access_token;
-                localStorage.setItem('accessToken', accessToken);
+                login(accessToken); 
+                setSuccess("Connexion réussie ! Redirection en cours...");
                 
-                console.log('Connexion réussie. Token stocké:', accessToken);
-                
-                // Redirection vers le tableau de bord
-                navigate('/dashboard'); 
+                setTimeout(() => {
+                    navigate('/dashboard'); 
+                }, 1000); 
 
             } else {
-                // Échec de l'authentification (ex: 401 Unauthorized)
-                setError(responseData.detail || 'Email ou mot de passe incorrect.');
+                const errorMessage = responseData.detail || "Email ou mot de passe incorrect.";
+                setError(errorMessage);
             }
-        } catch (err) {
-            // Échec réseau ou serveur inaccessible
-            console.error("Erreur réseau ou du serveur:", err);
-            setError("Impossible de joindre le serveur. Vérifiez que le back-end est démarré.");
+        } catch (error) {
+            console.error("Erreur réseau:", error);
+            setError("Impossible de joindre le serveur. Veuillez vérifier votre connexion.");
         } finally {
-            setIsLoading(false); // Fin du chargement
+            setIsLoading(false);
         }
     };
 
     return (
-        <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
-            <h1 style={{ textAlign: 'center', color: '#007BFF' }}>Se Connecter</h1>
-            
-            {/* Affichage des erreurs si l'état 'error' est rempli */}
-            {error && (
-                <p style={{ color: 'red', textAlign: 'center', fontWeight: 'bold' }}>
-                    Erreur: {error}
-                </p>
-            )}
+        <div style={containerStyle}>
+            {/* Icône de l'haltère */}
+            <div style={logoStyle}>
+                <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4.16667 20.8333H0V29.1667H4.16667V20.8333ZM45.8333 20.8333H50V29.1667H45.8333V20.8333ZM10.4167 20.8333C10.4167 15.1167 15.1167 10.4167 20.8333 10.4167H29.1667C34.8833 10.4167 39.5833 15.1167 39.5833 20.8333V29.1667C39.5833 34.8833 34.8833 39.5833 29.1667 39.5833H20.8333C15.1167 39.5833 10.4167 34.8833 10.4167 29.1667V20.8333ZM12.5 25C12.5 16.275 19.275 9.58333 25 9.58333C30.725 9.58333 37.5 16.275 37.5 25C37.5 33.725 30.725 40.4167 25 40.4167C19.275 40.4167 12.5 33.725 12.5 25Z" fill="#FF3B3F"/>
+                </svg>
+            </div>
+            <h1 style={titleStyle}>Fitness Clash</h1>
 
-            {/* Le formulaire géré par React */}
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            {/* Affichage des messages de statut */}
+            {success && <div style={successMessageStyle}>{success}</div>}
+            {error && <div style={errorMessageStyle}>{error}</div>}
+
+            <form onSubmit={handleSubmit} style={formStyle}>
                 
-                <input
-                    type="email"
-                    placeholder="Adresse Email"
-                    value={email}
+                <label htmlFor="email" style={labelStyle}>E-mail</label>
+                <input 
+                    id="email"
+                    type="email" 
+                    value={email} 
                     onChange={(e) => setEmail(e.target.value)}
-                    required
+                    placeholder="Entrez votre e-mail"
+                    required 
                     style={inputStyle}
-                    disabled={isLoading} // Désactivation pendant le chargement
                 />
-
-                <input
-                    type="password"
-                    placeholder="Mot de passe"
-                    value={password}
+                
+                <label htmlFor="password" style={labelStyle}>Mot de passe</label>
+                <input 
+                    id="password"
+                    type="password" 
+                    value={password} 
                     onChange={(e) => setPassword(e.target.value)}
-                    required
+                    placeholder="Entrez votre mot de passe"
+                    required 
                     style={inputStyle}
-                    disabled={isLoading} // Désactivation pendant le chargement
                 />
-
-                <button 
-                    type="submit"
-                    style={buttonStyle}
-                    disabled={isLoading} // Empêche les clics multiples pendant le chargement
-                >
-                    {/* Affichage conditionnel du texte du bouton */}
-                    {isLoading ? 'Connexion en cours...' : 'Connexion'}
+                
+                <button type="submit" disabled={isLoading} style={buttonStyle}>
+                    {isLoading ? "Connexion en cours..." : "Connexion"}
                 </button>
             </form>
-            
-            <p style={{ marginTop: '20px', textAlign: 'center' }}>
-                Pas encore inscrit ? <Link to="/register" style={{ color: '#007BFF' }}>Créer un compte</Link>
+
+            <p style={linkTextStyle}>
+                Pas encore de compte ? 
+                <Link to="/register" style={linkStyle}> S'inscrire</Link>
             </p>
         </div>
     );
 };
 
-// Styles rapides (réutilisés du composant Register)
-const inputStyle: React.CSSProperties = {
+// Styles pour les messages
+const successMessageStyle: React.CSSProperties = {
     padding: '10px',
+    marginBottom: '20px',
+    backgroundColor: 'rgba(40, 167, 69, 0.2)', // Vert transparent
+    color: '#28a745',
     borderRadius: '4px',
-    border: '1px solid #ccc',
-    fontSize: '16px'
+    textAlign: 'center'
+};
+
+const errorMessageStyle: React.CSSProperties = {
+    padding: '10px',
+    marginBottom: '20px',
+    backgroundColor: 'rgba(220, 53, 69, 0.2)', // Rouge transparent
+    color: '#dc3545',
+    borderRadius: '4px',
+    textAlign: 'center'
+};
+
+// Styles du composant (reproduits de votre image)
+const containerStyle: React.CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: '100vh',
+    backgroundColor: '#1C1C1E', // Fond noir profond
+    color: 'white',
+    padding: '20px',
+    fontFamily: 'Arial, sans-serif' // Police plus générique
+};
+
+const logoStyle: React.CSSProperties = {
+    // Utilisation d'une SVG pour l'haltère pour une meilleure qualité
+    marginBottom: '20px'
+};
+
+const titleStyle: React.CSSProperties = {
+    fontSize: '32px',
+    fontWeight: 'bold',
+    marginBottom: '50px',
+    color: 'white' // Texte blanc
+};
+
+const formStyle: React.CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    maxWidth: '350px' // Largeur max pour le formulaire
+};
+
+const labelStyle: React.CSSProperties = {
+    textAlign: 'left',
+    marginBottom: '8px',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    color: 'white'
+};
+
+const inputStyle: React.CSSProperties = {
+    padding: '15px',
+    marginBottom: '20px',
+    border: 'none',
+    borderRadius: '8px',
+    backgroundColor: '#383838', // Gris foncé pour les champs
+    color: 'white',
+    fontSize: '16px',
+    '::placeholder': { // Pseudo-élément pour le placeholder
+        color: '#A0A0A0'
+    }
 };
 
 const buttonStyle: React.CSSProperties = {
-    padding: '12px',
-    backgroundColor: '#007BFF',
-    color: 'white',
+    padding: '15px',
     border: 'none',
-    borderRadius: '4px',
-    fontSize: '16px',
+    borderRadius: '8px',
+    backgroundColor: '#FF3B3F', // Bouton rouge vif
+    color: 'white',
+    fontSize: '18px',
+    fontWeight: 'bold',
     cursor: 'pointer',
-    marginTop: '10px'
+    marginTop: '10px',
+    transition: 'background-color 0.3s ease'
 };
+
+const linkTextStyle: React.CSSProperties = {
+    marginTop: '30px',
+    fontSize: '16px',
+    color: '#A0A0A0' // Gris clair pour le texte
+};
+
+const linkStyle: React.CSSProperties = {
+    color: '#FF3B3F', // Rouge vif pour le lien
+    textDecoration: 'none',
+    fontWeight: 'bold'
+};
+
 
 export default Login;
