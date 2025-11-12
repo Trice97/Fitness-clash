@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
-from app.routes import users, workouts, exercises
+from app.routes import users, workouts, exercises, auth
+
 
 # ---Création des tables---
 Base.metadata.create_all(bind=engine)
+
 
 # --- Instance principale ---
 app = FastAPI(
@@ -13,11 +15,13 @@ app = FastAPI(
     version="1.0.0",
 )
 
+
 # --- Configuration CORS ---
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -26,13 +30,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-# from app.routes import exercises
-# app.include_router(exercises.router, prefix="/api")
+
 
 # Inclusion des routes
 app.include_router(users.router, prefix="/api")
 app.include_router(workouts.router, prefix="/api")
 app.include_router(exercises.router, prefix="/api")
+app.include_router(auth.router, prefix="/api")
 
 
 # --- Routes de base ---
