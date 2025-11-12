@@ -45,7 +45,10 @@ class ExerciseCreate(ExerciseBase):
     duration_seconds: Optional[int] = Field(
         default=None, ge=1, description="Durée en secondes"
     )
-    points_value: int = Field(..., ge=1, description="Points attribués à l'exercice")
+    points_value: int = Field(..., ge=1, description="Points attribués à l'exercice"
+    gif_url: Optional[str] = Field(
+        default=None, max_length=255, description="URL du GIF d'animation"
+    )
 
 
 # ==========================================
@@ -62,6 +65,7 @@ class ExerciseResponse(ExerciseBase):
     reps: Optional[int]
     duration_seconds: Optional[int]
     points_value: int
+    gif_url: Optional[str]
 
     class Config:
         from_attributes = True

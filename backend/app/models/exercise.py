@@ -29,6 +29,7 @@ class Exercise(Base):
     reps = Column(Integer, nullable=True)
     duration_seconds = Column(Integer, nullable=True)
     points_value = Column(Integer, nullable=False, default=10)
+    gif_url = Column(String(255), nullable=True)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
