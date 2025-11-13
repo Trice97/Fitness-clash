@@ -5,7 +5,9 @@ Usage: python seed_exercises.py
 from sqlalchemy.orm import Session
 from app.database import SessionLocal
 from app.models.exercise import Exercise, BodyPart
-
+from app.models.workout import Workout
+from app.models.workout import WorkoutExercise
+from app.models.user import User
 
 def seed_exercises(db: Session):
     """Peuple la base de données avec 9 exercices de démonstration"""
@@ -14,7 +16,7 @@ def seed_exercises(db: Session):
         # ========== UPPER (Haut du corps) ==========
         {
             "name": "Push ups bodyweight",
-            "body_part": BodyPart.upper,
+            "body_part": BodyPart.UPPER,
             "difficulty": 1,
             "description": "Exercice de pompes classiques au poids du corps pour renforcer les pectoraux, triceps et épaules.",
             "instructions": "1. Position de départ : mains au sol largeur des épaules, corps gainé en planche\n2. Descendez en fléchissant les coudes jusqu'à ce que la poitrine touche presque le sol\n3. Poussez pour revenir en position haute\n4. Gardez le corps aligné du haut à en bas",
@@ -25,7 +27,7 @@ def seed_exercises(db: Session):
         },
         {
             "name": "Diamond Push-up",
-            "body_part": BodyPart.upper,
+            "body_part": BodyPart.UPPER,
             "difficulty": 2,
             "description": "Variante de pompes avec les mains rapprochées en forme de diamant, ciblant davantage les triceps.",
             "instructions": "1. Position de départ : mains rapprochées formant un diamant sous la poitrine\n2. Descendez lentement en gardant les coudes près du corps\n3. Poussez pour remonter\n4. Maintenez le gainage tout au long du mouvement",
@@ -36,7 +38,7 @@ def seed_exercises(db: Session):
         },
         {
             "name": "Chest Tap Push-up",
-            "body_part": BodyPart.upper,
+            "body_part": BodyPart.UPPER,
             "difficulty": 3,
             "description": "Pompe explosive avec tape de la poitrine en l'air, demandant puissance et coordination.",
             "instructions": "1. Démarrez en position de pompe classique\n2. Poussez explosif pour décoller les mains du sol\n3. Tapez votre poitrine avec une main en l'air\n4. Réceptionnez en douceur et répétez\n5. Alternez la main qui tape",
@@ -49,7 +51,7 @@ def seed_exercises(db: Session):
         # ========== CORE (Abdos/Tronc) ==========
         {
             "name": "Abdominal Crunches",
-            "body_part": BodyPart.core,
+            "body_part": BodyPart.CORE,
             "difficulty": 1,
             "description": "Crunch abdominal basique pour travailler les abdominaux supérieurs.",
             "instructions": "1. Allongez-vous sur le dos, genoux pliés, pieds au sol\n2. Mains derrière la tête ou sur la poitrine\n3. Contractez les abdos pour soulever les épaules du sol\n4. Redescendez lentement sans reposer complètement\n5. Gardez le bas du dos collé au sol",
@@ -60,7 +62,7 @@ def seed_exercises(db: Session):
         },
         {
             "name": "Dead Bug",
-            "body_part": BodyPart.core,
+            "body_part": BodyPart.CORE,
             "difficulty": 2,
             "description": "Exercice de coordination pour renforcer les abdominaux et la stabilité du tronc.",
             "instructions": "1. Allongé sur le dos, bras tendus vers le plafond, genoux à 90°\n2. Tendez simultanément un bras en arrière et la jambe opposée\n3. Revenez à la position de départ\n4. Alternez de l'autre côté\n5. Gardez le bas du dos plaqué au sol",
@@ -71,7 +73,7 @@ def seed_exercises(db: Session):
         },
         {
             "name": "Crunch Frog on Floor",
-            "body_part": BodyPart.core,
+            "body_part": BodyPart.CORE,
             "difficulty": 3,
             "description": "Mouvement dynamique combinant crunch et rapprochement des genoux pour un travail complet des abdos.",
             "instructions": "1. Assis au sol, jambes tendues devant vous\n2. Ramenez les genoux vers la poitrine tout en contractant les abdos\n3. Tendez à nouveau les jambes sans toucher le sol\n4. Gardez l'équilibre sur les fesses\n5. Mouvement fluide et contrôlé",
@@ -84,7 +86,7 @@ def seed_exercises(db: Session):
         # ========== LOWER (Bas du corps) ==========
         {
             "name": "Jumping Lunge",
-            "body_part": BodyPart.lower,
+            "body_part": BodyPart.LOWER,
             "difficulty": 1,
             "description": "Fente sautée pour travailler les jambes avec un aspect cardio et explosivité.",
             "instructions": "1. Position de fente : jambe avant pliée à 90°, genou arrière près du sol\n2. Sautez en changeant de jambe en l'air\n3. Atterrissez en fente de l'autre côté\n4. Gardez le buste droit et le regard devant\n5. Mouvement dynamique et rythmé",
@@ -95,7 +97,7 @@ def seed_exercises(db: Session):
         },
         {
             "name": "Frog Jumps",
-            "body_part": BodyPart.lower,
+            "body_part": BodyPart.LOWER,
             "difficulty": 2,
             "description": "Sauts de grenouille pour développer la puissance des jambes et le cardio.",
             "instructions": "1. Position accroupie, mains au sol entre les jambes\n2. Sautez explosif vers l'avant\n3. Atterrissez en position accroupie\n4. Enchaînez les sauts\n5. Gardez les mains au sol à chaque réception",
@@ -106,7 +108,7 @@ def seed_exercises(db: Session):
         },
         {
             "name": "Jumping Pistol Squat",
-            "body_part": BodyPart.lower,
+            "body_part": BodyPart.LOWER,
             "difficulty": 3,
             "description": "Squat unijambiste explosif, exercice avancé demandant force, équilibre et puissance.",
             "instructions": "1. Tenez-vous sur une jambe, l'autre tendue devant vous\n2. Descendez en squat sur une jambe\n3. Poussez explosif pour sauter\n4. Atterrissez sur la même jambe en contrôle\n5. Alternez de jambe après chaque série",
