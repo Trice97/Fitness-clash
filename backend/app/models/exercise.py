@@ -34,7 +34,9 @@ class Exercise(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     # relation avec la table intermédiair Workoutexercise
-    workout_exercises = relationship("WorkoutExercise", back_populates="exercise", lazy="select")
+    workout_exercises = relationship(
+        "WorkoutExercise", back_populates="exercise", lazy="select"
+    )
 
     def __repr__(self):
         return f"<Exercise(name={self.name}, part={self.body_part}, level={self.difficulty})>"

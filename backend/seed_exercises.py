@@ -2,16 +2,15 @@
 Script de seed pour peupler la table exercises avec 9 exercices de démo
 Usage: python seed_exercises.py
 """
+
 from sqlalchemy.orm import Session
 from app.database import SessionLocal
 from app.models.exercise import Exercise, BodyPart
-from app.models.workout import Workout
-from app.models.workout import WorkoutExercise
-from app.models.user import User
+
 
 def seed_exercises(db: Session):
     """Peuple la base de données avec 9 exercices de démonstration"""
-    
+
     exercises_data = [
         # ========== UPPER (Haut du corps) ==========
         {
@@ -23,7 +22,7 @@ def seed_exercises(db: Session):
             "reps": 15,
             "duration_seconds": None,
             "points_value": 10,
-            "gif_url": None
+            "gif_url": None,
         },
         {
             "name": "Diamond Push-up",
@@ -34,7 +33,7 @@ def seed_exercises(db: Session):
             "reps": 12,
             "duration_seconds": None,
             "points_value": 20,
-            "gif_url": None
+            "gif_url": None,
         },
         {
             "name": "Chest Tap Push-up",
@@ -45,9 +44,8 @@ def seed_exercises(db: Session):
             "reps": 8,
             "duration_seconds": None,
             "points_value": 30,
-            "gif_url": None
+            "gif_url": None,
         },
-        
         # ========== CORE (Abdos/Tronc) ==========
         {
             "name": "Abdominal Crunches",
@@ -58,7 +56,7 @@ def seed_exercises(db: Session):
             "reps": 20,
             "duration_seconds": None,
             "points_value": 10,
-            "gif_url": None
+            "gif_url": None,
         },
         {
             "name": "Dead Bug",
@@ -69,7 +67,7 @@ def seed_exercises(db: Session):
             "reps": 16,
             "duration_seconds": None,
             "points_value": 20,
-            "gif_url": None
+            "gif_url": None,
         },
         {
             "name": "Crunch Frog on Floor",
@@ -80,9 +78,8 @@ def seed_exercises(db: Session):
             "reps": 15,
             "duration_seconds": None,
             "points_value": 30,
-            "gif_url": None
+            "gif_url": None,
         },
-        
         # ========== LOWER (Bas du corps) ==========
         {
             "name": "Jumping Lunge",
@@ -93,7 +90,7 @@ def seed_exercises(db: Session):
             "reps": 20,
             "duration_seconds": None,
             "points_value": 10,
-            "gif_url": None
+            "gif_url": None,
         },
         {
             "name": "Frog Jumps",
@@ -104,7 +101,7 @@ def seed_exercises(db: Session):
             "reps": 15,
             "duration_seconds": None,
             "points_value": 20,
-            "gif_url": None
+            "gif_url": None,
         },
         {
             "name": "Jumping Pistol Squat",
@@ -115,33 +112,35 @@ def seed_exercises(db: Session):
             "reps": 6,
             "duration_seconds": None,
             "points_value": 30,
-            "gif_url": None
-        }
+            "gif_url": None,
+        },
     ]
-    
+
     added_count = 0
     skipped_count = 0
-    
+
     print("🚀 Démarrage du seed des exercices...\n")
-    
+
     for ex_data in exercises_data:
         # Vérifier si l'exercice existe déjà
-        existing = db.query(Exercise).filter(Exercise.name == ex_data['name']).first()
+        existing = db.query(Exercise).filter(Exercise.name == ex_data["name"]).first()
         if existing:
             print(f"⏭️  Ignoré: {ex_data['name']} (existe déjà)")
             skipped_count += 1
             continue
-        
+
         # Créer l'exercice
         exercise = Exercise(**ex_data)
         db.add(exercise)
-        print(f"✅ Ajouté: {ex_data['name']} (difficulté={ex_data['difficulty']}, points={ex_data['points_value']})")
+        print(
+            f"✅ Ajouté: {ex_data['name']} (difficulté={ex_data['difficulty']}, points={ex_data['points_value']})"
+        )
         added_count += 1
-    
+
     # Commit tous les exercices
     try:
         db.commit()
-        print(f"\n🎉 Seed terminé avec succès !")
+        print("\n🎉 Seed terminé avec succès !")
         print(f"   ✅ {added_count} exercices ajoutés")
         print(f"   ⏭️  {skipped_count} exercices ignorés (déjà présents)")
     except Exception as e:

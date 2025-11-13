@@ -23,7 +23,7 @@ def generate_workout(db: Session, user_id: int):
     exercises = (
         db.query(Exercise)
         .filter(Exercise.difficulty == user.difficulty_level)
-        .limit(5)
+        .limit(3)
         .all()
     )
 
@@ -50,8 +50,17 @@ def generate_workout(db: Session, user_id: int):
             target_reps=10,
             target_duration=None,
         )
-    db.add(link)
+        db.add(link)
     db.commit()
+    linked_exercises = (
+        db.query(Exercise)
+        .join(WorkoutExercise)
+        .filter(WorkoutExercise.workout_id == new_workout.id)
+        .limit(3)
+        .all()
+    )
+    new_workout.exercises = linked_exercises
+
     db.refresh(new_workout)
     return new_workout
 

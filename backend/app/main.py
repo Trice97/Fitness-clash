@@ -33,10 +33,11 @@ app.add_middleware(
 
 
 # Inclusion des routes
-app.include_router(auth.router, prefix="/api")      
-app.include_router(users.router, prefix="/api")     
-app.include_router(exercises.router, prefix="/api") 
-app.include_router(workouts.router, prefix="/api")  
+app.include_router(auth.router, prefix="/api")
+app.include_router(users.router, prefix="/api")
+app.include_router(exercises.router, prefix="/api")
+app.include_router(workouts.router, prefix="/api")
+
 
 # --- Routes de base ---
 @app.get("/")
