@@ -5,7 +5,7 @@ from app.database import Base
 
 
 class Workout(Base):
-    """table des entraînement générés automatiquement"""
+    """table des entraînements générés automatiquement"""
 
     __tablename__ = "workouts"
 
