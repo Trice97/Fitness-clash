@@ -19,9 +19,7 @@ class WorkoutExerciseResponse(BaseModel):
     order: int = Field(..., description="ordre de l'exercise dans le workout")
     exercise: ExerciseResponse
     target_reps: Optional[int] = Field(None, description="Objectif de répitions")
-    target_duration: Optional[int] = Field(
-        None, description="Objectif de durée en seconde"
-    )
+    target_duration: Optional[int] = Field(None, description="Objectif de durée en seconde")
 
     class Config:
         from_attributes = True

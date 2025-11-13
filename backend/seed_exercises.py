@@ -6,7 +6,8 @@ Usage: python seed_exercises.py
 from sqlalchemy.orm import Session
 from app.database import SessionLocal
 from app.models.exercise import Exercise, BodyPart
-
+from app.models.workout import Workout, WorkoutExercise
+from app.models.user import User
 
 def seed_exercises(db: Session):
     """Peuple la base de données avec 9 exercices de démonstration"""
@@ -22,7 +23,7 @@ def seed_exercises(db: Session):
             "reps": 15,
             "duration_seconds": None,
             "points_value": 10,
-            "gif_url": None,
+            "gif_url": "/static/gifs/Upper_1_Push-ups-bodyweight.mp4",
         },
         {
             "name": "Diamond Push-up",
@@ -33,7 +34,7 @@ def seed_exercises(db: Session):
             "reps": 12,
             "duration_seconds": None,
             "points_value": 20,
-            "gif_url": None,
+            "gif_url": "/static/gifs/Upper_2_Diamond-Pushup-4k.mp4",
         },
         {
             "name": "Chest Tap Push-up",
@@ -44,7 +45,7 @@ def seed_exercises(db: Session):
             "reps": 8,
             "duration_seconds": None,
             "points_value": 30,
-            "gif_url": None,
+            "gif_url": "/static/gifs/Upper_3_Chest-tap-Pushups.mp4",
         },
         # ========== CORE (Abdos/Tronc) ==========
         {
@@ -56,7 +57,7 @@ def seed_exercises(db: Session):
             "reps": 20,
             "duration_seconds": None,
             "points_value": 10,
-            "gif_url": None,
+            "gif_url": "/static/gifs/CORE_1_Abdominal-Crunches.mp4",
         },
         {
             "name": "Dead Bug",
@@ -67,7 +68,7 @@ def seed_exercises(db: Session):
             "reps": 16,
             "duration_seconds": None,
             "points_value": 20,
-            "gif_url": None,
+            "gif_url": "/static/gifs/CORE_2_Dead-Bug-4k.mp4",
         },
         {
             "name": "Crunch Frog on Floor",
@@ -78,7 +79,7 @@ def seed_exercises(db: Session):
             "reps": 15,
             "duration_seconds": None,
             "points_value": 30,
-            "gif_url": None,
+            "gif_url": "/static/gifs/CORE_3_Abdominal-Crunches-Hold.mp4",
         },
         # ========== LOWER (Bas du corps) ==========
         {
@@ -90,7 +91,7 @@ def seed_exercises(db: Session):
             "reps": 20,
             "duration_seconds": None,
             "points_value": 10,
-            "gif_url": None,
+            "gif_url": "/static/gifs/LOWER_1_Jumping-Lunge.mp4",
         },
         {
             "name": "Frog Jumps",
@@ -101,7 +102,7 @@ def seed_exercises(db: Session):
             "reps": 15,
             "duration_seconds": None,
             "points_value": 20,
-            "gif_url": None,
+            "gif_url": "/static/gifs/LOWER_2_Frog-Jumps.mp4",
         },
         {
             "name": "Jumping Pistol Squat",
@@ -112,7 +113,7 @@ def seed_exercises(db: Session):
             "reps": 6,
             "duration_seconds": None,
             "points_value": 30,
-            "gif_url": None,
+            "gif_url": "/static/gifs/LOWER_3_Jumping-Pistol-Squat.mp4",
         },
     ]
 

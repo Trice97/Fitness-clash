@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from app.database import Base, engine
 from app.routes import users, workouts, exercises, auth
 
@@ -32,11 +33,19 @@ app.add_middleware(
 )
 
 
+# 👇 AJOUTÉ - Servir les fichiers statiques (GIFs)
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
 # Inclusion des routes
-app.include_router(auth.router, prefix="/api")
-app.include_router(users.router, prefix="/api")
-app.include_router(exercises.router, prefix="/api")
-app.include_router(workouts.router, prefix="/api")
+
+
+
+app.include_router(auth.router, prefix="/api")      # 1. Auth en premier (login/register)
+app.include_router(users.router, prefix="/api")     # 2. Users
+app.include_router(exercises.router, prefix="/api") # 3. Exercises
+app.include_router(workouts.router, prefix="/api")  # 4. Workouts (dépend de users et exercises)
+
 
 
 # --- Routes de base ---

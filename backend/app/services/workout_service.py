@@ -51,17 +51,24 @@ def generate_workout(db: Session, user_id: int):
             target_duration=None,
         )
         db.add(link)
+
     db.commit()
-    linked_exercises = (
-        db.query(Exercise)
-        .join(WorkoutExercise)
+
+# Récupère les WorkoutExercise associés au workout
+    workout_exercises = (
+        db.query(WorkoutExercise)
         .filter(WorkoutExercise.workout_id == new_workout.id)
-        .limit(3)
         .all()
     )
-    new_workout.exercises = linked_exercises
+
+    # Charge les exercices liés pour chaque WorkoutExercise
+    for w_ex in workout_exercises:
+        _ = w_ex.exercise  # force SQLAlchemy à charger la relation
+
+    new_workout.exercises = workout_exercises
 
     db.refresh(new_workout)
+
     return new_workout
 
 

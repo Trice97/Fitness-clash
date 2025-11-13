@@ -35,7 +35,10 @@ class Exercise(Base):
 
     # relation avec la table intermédiair Workoutexercise
     workout_exercises = relationship(
-        "WorkoutExercise", back_populates="exercise", lazy="select"
+        "WorkoutExercise",
+        back_populates="exercise",
+        lazy="select",
+        overlaps="exercise"
     )
 
     def __repr__(self):
