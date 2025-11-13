@@ -39,3 +39,11 @@ ENV/
 
 # Old files
 OLD BACKEN
+
+# Ignore virtual env
+backend/venv/
+
+# Ignore Python cache
+backend/**/__pycache__/
+*.pyc
+
