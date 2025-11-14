@@ -1,6 +1,9 @@
 // src/contexts/AuthContext.tsx (VERSION MISE À JOUR)
+/* eslint-disable react-refresh/only-export-components */
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+
 
 // Interface pour les données utilisateur (similaire à ce que /auth/me renvoie)
 interface UserData {
@@ -39,17 +42,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const isAuthenticated = !!token && !!user;
 
-    // Fonction pour déconnecter (réinitialise tout)
-    const handleLogout = () => {
-        localStorage.removeItem('accessToken');
-        setToken(null);
-        setUser(null);
-        setIsLoading(false);
-    };
+    const handleLogout = useCallback(() => {
+    localStorage.removeItem('accessToken');
+    setToken(null);
+    setUser(null);
+    setIsLoading(false);
+}, []);
 
     // NOUVEAU : Fonction pour récupérer les données utilisateur avec le token
-    const fetchUser = async (accessToken: string) => {
-        const API_URL = `${API_BASE_URL}/auth/me`;
+    const fetchUser = useCallback(async (accessToken: string) => {
+        const API_URL = `${API_BASE_URL}/api/auth/me`;
         
         try {
             const response = await fetch(API_URL, {
@@ -73,7 +75,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [handleLogout]);
 
     // Gestion du login/register (stocke le token et lance la récupération des données)
     const handleLogin = (accessToken: string) => {
@@ -84,9 +86,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
     // Fonction d'inscription (qui connecte directement)
     // Note : Votre ancienne fonction 'register' est désormais 'handleLogin'
-    const register = handleLogin; 
+
 
     // Effet pour vérifier le token au chargement OU si le token change
+
+     
+
     useEffect(() => {
         if (token) {
             // Un token est présent, on tente de récupérer les données utilisateur
@@ -95,7 +100,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             // Pas de token, on met fin au chargement
             setIsLoading(false); 
         }
-    }, [token]); // Se déclenche uniquement si le token change
+    }, [token, fetchUser]); // Se déclenche uniquement si le token change
 
     const contextValue: AuthContextType = {
         user, // MAINTENANT DISPONIBLE !

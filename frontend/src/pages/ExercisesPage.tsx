@@ -5,7 +5,9 @@ interface Exercise {
     id: number;
     name: string;
     description: string;
-    muscle_group: string;
+    body_part: string;
+    target: string;
+    equipment: string;
     difficulty: string;
 }
 
@@ -21,7 +23,7 @@ const ExercisesPage = () => {
 
             // *** VÉRIFIEZ L'URL DE BASE DU BACK-END ***
             // Route : GET http://localhost:8000/exercises/
-            const API_URL = "http://localhost:8000/exercises/"; 
+            const API_URL = "http://localhost:8000/api/exercises/"; 
 
             try {
                 const response = await fetch(API_URL, {
@@ -75,8 +77,12 @@ const ExercisesPage = () => {
                 {exercises.map((exercise) => (
                     <div key={exercise.id} style={exerciseCardStyle}>
                         <h3>{exercise.name}</h3>
-                        <p><strong>Groupe musculaire :</strong> {exercise.muscle_group}</p>
+
+                        <p><strong>Zone du corps :</strong> {exercise.body_part}</p>
+                        <p><strong>Cible :</strong> {exercise.target}</p>
+                        <p><strong>Equipement :</strong> {exercise.equipment}</p>
                         <p><strong>Difficulté :</strong> {exercise.difficulty}</p>
+
                         <p style={{fontSize: '0.9em', color: '#666'}}>{exercise.description}</p>
                     </div>
                 ))}

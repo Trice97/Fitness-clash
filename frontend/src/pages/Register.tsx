@@ -23,7 +23,7 @@ const Register = () => {
         setSuccess(null);
         setIsLoading(true);
 
-        const API_URL = `${API_BASE_URL}/users/`;
+        const API_URL = `${API_BASE_URL}/api/users/`;
 
         try {
             const response = await fetch(API_URL, {
